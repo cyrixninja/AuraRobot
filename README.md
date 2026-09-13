@@ -25,8 +25,7 @@ Aura is documented so a beginner can understand both what was built and how to r
 | Evidence | What it demonstrates |
 | --- | --- |
 | ![Assembled Aura robot](assets/robot.JPG) | The finished wheeled companion with its expressive OLED head. |
-| ![Aura internal electronics and battery](inside.JPG) | The installed UNO Q, internal wiring, and the reference build's 12 V Li-ion battery pack. |
-| ![Aura manual dashboard](assets/dashboard.png) | The Arduino App Lab dashboard used to check motors, head, eyes, and connection state. |
+| ![Aura manual dashboard](assets/dashboard.png) | The dashboard used to check motors, head, eyes, and connection state. |
 | ![Aura architecture](assets/architechture.png) | How Gemini Live, the UNO Q Linux side, App Lab, and the MCU cooperate. |
 | [Circuit diagram](circuit_image.png) | The physical controller, motor driver, servo, and OLED wiring reference. |
 
@@ -85,13 +84,11 @@ Quantities describe the reference build. Equivalent parts are fine when their vo
 | --- | --- | --- |
 | 1 | Arduino UNO Q | Runs Arduino App Lab, the Linux voice application, and the real-time MCU sketch. |
 | 1 | L298N dual H-bridge motor-driver module | Drives the left and right DC motors. Its ENA and ENB pins must be available for PWM speed control. |
-| 2 | DC geared motors and wheels | Left and right drive. Match them to the printed chassis and selected motor supply. |
+| 4 | DC BO and wheels | Left and right drive. Match them to the printed chassis and selected motor supply. |
 | 1 | Compatible positional servo and two-arm horn | Turns Aura's head. The printed adapter expects a two-arm horn. |
 | 1 | 128 × 64 SH1106 I²C OLED module | Animated face display. Use a module compatible with its selected logic voltage. |
 | 1 set | Five supplied 3D-printed parts | Chassis, body, OLED head front, head rear cover, and horn adapter. |
-| 1 | 3S 18650 Li-ion battery pack | Reference build: pack marked `12 V`, `30,000 mAh`, `9.2–12.6 V`, and `9 A`; visible in [the internal build photo](inside.JPG). It is the source for the motor-power system. |
-| 1 | Suitable regulated power stage | Required wherever the chosen servo, OLED, or other device needs a voltage lower than the battery rail. Select it from the actual device voltage/current requirements. |
-| 1 | Inline fuse and accessible power switch | Strongly recommended between the battery and the load; place the fuse close to the battery positive lead. |
+| 1 | Regulated motor/servo power supply | Size it for the motors' stall current and the servo's peak current. Keep it separate from UNO Q USB logic power. |
 | 1 | USB microphone | Voice input; connects through the UNO Q USB-C host path. |
 | 1 | Powered AUX speaker or amplified speaker | Aura's voice output; connects through a USB-C audio adapter/hub. A passive speaker alone is not sufficient. |
 | 1 | USB-C audio adapter or powered USB-C hub, plus data cables/adapters | Lets the UNO Q enumerate the microphone and speaker. Choose a data-capable, Linux-compatible device. |
@@ -187,37 +184,7 @@ Audio does **not** use UNO Q GPIO pins. The reference build uses a normal USB mi
 
 The voice process mutes its microphone stream while Aura speaks and waits briefly before resuming it, reducing speaker echo. Keep `ALLOW_BARGE_IN=false` unless you add acoustic echo cancellation or headphones.
 
-### Manual Control Dashboard
-
-![Aura Robot manual control dashboard](assets/dashboard.png)
-
-Arduino App Lab provides Aura's **Manual Control Dashboard**: a visual control deck for first-time wiring checks, live demonstrations, and a fallback when voice control is unavailable. It is deliberately separate from Gemini, so the physical robot can always be inspected and tested without a voice command.
-
-| Dashboard control | What it does |
-| --- | --- |
-| Connection indicator | Shows whether the App Lab controller is reachable. Do not drive when it says disconnected. |
-| Current action | Shows the last requested movement state, including `STOP`. |
-| Drive pad | Press and hold Forward, Back, Left, or Right to move; releasing the button sends stop. The directions can also be controlled with `W`/`A`/`S`/`D` or arrow keys. |
-| Stop | Immediately sends `/api/stop`. Press the dashboard Stop button or the keyboard `Space` bar whenever testing motion. |
-| Wheel power | Sets the shared wheel-speed target from 0 to 70. Keep it at the safe default of 70 or lower. |
-| Personality and Blink Eyes | Selects Normal, Happy, Angry, Tired, Curious, or Auto face behavior, and triggers a blink. |
-| Head rotation | Slider and buttons move the head inside its enforced 55°–135° range. `Q`/`E` move in 5° steps; `C` returns to 90° center. |
-
-Use the dashboard before starting `robot.py`: with wheels raised, confirm **Connected**, set speed to 70 or lower, test Blink, center the head, test left/right head movement, then briefly test each wheel direction. The dashboard's direct drive action is for a person actively holding a control; it is not a replacement for Gemini's MCU-timed voice moves. Keep a hand on Stop and disconnect battery power before changing hardware wiring.
-
-### Battery and power distribution
-
-![Aura's installed battery and internal wiring](inside.JPG)
-
-The internal photo shows the reference build's battery inside the chassis: a 3S 18650 Li-ion pack marked `12 V`, `30,000 mAh`, `9.2–12.6 V`, and `9 A`. Treat those as the markings on this particular pack, not as a universal battery specification for every Aura build. The photo confirms the installed battery, UNO Q, and wiring, but it does not establish an exact charging circuit or regulator configuration; follow the labels and documentation of your own battery pack, BMS, charger, L298N, servo, and OLED.
-
-- Connect the battery's positive and negative leads to the **correctly marked** motor-power input and ground path only after checking polarity with a multimeter.
-- Put an appropriately rated fuse close to the battery positive terminal and use an accessible power switch. Never work on the wiring while the battery is connected.
-- Feed servo and OLED power through a regulator only when their voltage specifications require it. Never feed the 9.2–12.6 V battery rail directly into a device that expects 5 V or 3.3 V.
-- Join the regulator/L298N ground, UNO Q ground, servo ground, and OLED ground as a common ground. Do **not** power motors or the servo from the UNO Q USB/logic 5 V rail.
-- Charge a Li-ion pack only with the charger and protection arrangement specified for that pack. Stop using it if the pack, cable, connector, or enclosure becomes damaged, swollen, hot, or smells unusual.
-
-Disconnect power while changing wiring, first test with the wheels raised, and verify `/api/stop` before placing Aura on the floor.
+The diagram does not specify one universal battery or supply: choose one rated for your specific motors and servo, including their startup/stall current. Do **not** power the motors or servo from the UNO Q USB/logic 5 V rail. Disconnect power while changing wiring, first test with the wheels raised, and verify `/api/stop` before placing Aura on the floor.
 
 ## Code, contribution, and creativity
 
@@ -230,20 +197,6 @@ Disconnect power while changing wiring, first test with the wheels raised, and v
 
 Aura's creative contribution is that voice conversation has an embodied, readable response: animated eyes, head motion, and a gentle physical personality make the assistant feel present without handing unsafe low-level control to the model. UNO Q's Linux side handles conversational AI while its MCU independently maintains predictable motion limits. This fresh combination makes the robot approachable for homes, classrooms, maker spaces, and social-assistance demonstrations.
 
-### Demonstration checklist
-
-For a contest submission, pair the images above with a short video that shows: (1) the dashboard connected, (2) Aura greeting and changing its OLED expression, (3) `look left` and `look right`, (4) a 2.5-second `move forward` followed by its automatic stop, and (5) `stop` cancelling continuous motion. Record movement only in a clear area with supervision.
-
-## Safety first
-
-This robot has no obstacle, bumper, or cliff sensors.
-
-- Test every deployment with wheels raised first.
-- Use a clear, enclosed floor area only.
-- Stay close during continuous motion and keep access to the power switch.
-- Never test near stairs, people, pets, cables, or fragile objects.
-
-`stop`, `halt`, `freeze`, and emergency requests stop the motors immediately. Normal moves are timed on the MCU, so they end even if Python disconnects.
 
 ## Setup
 
