@@ -1,0 +1,3290 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, user-scalable=no"
+>
+
+<title>UNO Q • Robot Deck</title>
+
+<style>
+
+/* ============================================================
+   THEME
+============================================================ */
+
+:root {
+
+    --yellow: #F4D900;
+    --yellow-soft: #FFF36A;
+
+    --black: #111111;
+    --black-2: #1A1A1A;
+    --black-3: #262626;
+
+    --cyan: #20F4F4;
+    --cyan-soft: #A9FFFF;
+
+    --paper: #FFFDF2;
+    --muted: #77756B;
+
+    --red: #FF5A4F;
+    --green: #35E67A;
+
+    --line: 3px solid var(--black);
+
+    --shadow:
+        7px 7px 0 var(--black);
+
+    --shadow-small:
+        4px 4px 0 var(--black);
+}
+
+
+/* ============================================================
+   RESET
+============================================================ */
+
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html {
+    min-height: 100%;
+}
+
+body {
+
+    margin: 0;
+
+    min-height: 100vh;
+
+    background:
+        linear-gradient(
+            rgba(17,17,17,0.025) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(17,17,17,0.025) 1px,
+            transparent 1px
+        ),
+        var(--yellow);
+
+    background-size:
+        24px 24px;
+
+    color: var(--black);
+
+    font-family:
+        "Arial Black",
+        "Arial",
+        sans-serif;
+
+    padding:
+        22px;
+
+    overflow-x: hidden;
+}
+
+
+/* ============================================================
+   APP
+============================================================ */
+
+.app {
+
+    width: 100%;
+    max-width: 1180px;
+
+    margin:
+        0 auto;
+}
+
+
+/* ============================================================
+   TOP BAR
+============================================================ */
+
+.topbar {
+
+    display: grid;
+
+    grid-template-columns:
+        1fr
+        auto;
+
+    gap: 16px;
+
+    align-items: center;
+
+    margin-bottom: 22px;
+}
+
+
+.brand {
+
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+}
+
+
+.brand-mark {
+
+    width: 62px;
+    height: 48px;
+
+    border:
+        var(--line);
+
+    border-radius:
+        17px;
+
+    background:
+        var(--black);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    box-shadow:
+        var(--shadow-small);
+
+    transform:
+        rotate(-2deg);
+}
+
+
+.brand-eye {
+
+    width: 16px;
+    height: 18px;
+
+    background:
+        var(--cyan);
+
+    border-radius:
+        4px 4px 7px 7px;
+
+    box-shadow:
+        0 0 12px
+        rgba(32,244,244,0.45);
+}
+
+
+.brand-copy h1 {
+
+    margin: 0;
+
+    font-size:
+        clamp(
+            24px,
+            5vw,
+            40px
+        );
+
+    line-height: 0.95;
+
+    text-transform: uppercase;
+
+    letter-spacing: -1.5px;
+}
+
+
+.brand-copy p {
+
+    margin:
+        6px 0 0;
+
+    font-family:
+        Arial,
+        sans-serif;
+
+    font-weight: 700;
+
+    font-size: 13px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1.4px;
+}
+
+
+/* ============================================================
+   STATUS
+============================================================ */
+
+.status {
+
+    height: 48px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    padding:
+        0 16px;
+
+    border:
+        var(--line);
+
+    border-radius:
+        13px;
+
+    background:
+        var(--paper);
+
+    box-shadow:
+        var(--shadow-small);
+
+    text-transform: uppercase;
+
+    font-size: 12px;
+
+    letter-spacing: 0.8px;
+}
+
+
+.status-dot {
+
+    width: 12px;
+    height: 12px;
+
+    border-radius: 50%;
+
+    background:
+        #8E8E88;
+
+    border:
+        2px solid var(--black);
+}
+
+
+.status.connected .status-dot {
+
+    background:
+        var(--green);
+}
+
+
+.status.error .status-dot {
+
+    background:
+        var(--red);
+}
+
+
+/* ============================================================
+   ROBOT HERO
+============================================================ */
+
+.robot-card {
+
+    position: relative;
+
+    background:
+        var(--paper);
+
+    border:
+        var(--line);
+
+    border-radius:
+        24px;
+
+    box-shadow:
+        var(--shadow);
+
+    padding:
+        22px;
+
+    margin-bottom:
+        26px;
+
+    overflow: hidden;
+}
+
+
+.robot-card::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 220px;
+    height: 220px;
+
+    right: -80px;
+    top: -90px;
+
+    border:
+        3px solid var(--black);
+
+    border-radius: 50%;
+
+    background:
+        var(--cyan);
+
+    opacity: 0.12;
+}
+
+
+.robot-hero {
+
+    position: relative;
+
+    z-index: 2;
+
+    display: grid;
+
+    grid-template-columns:
+        auto 1fr auto;
+
+    gap: 24px;
+
+    align-items: center;
+}
+
+
+/* ============================================================
+   MINI ROBOT FACE
+============================================================ */
+
+.face-shell {
+
+    width: 184px;
+    height: 125px;
+
+    background:
+        var(--yellow);
+
+    border:
+        var(--line);
+
+    border-radius:
+        38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    box-shadow:
+        inset 0 -8px 0
+        rgba(0,0,0,0.06),
+        var(--shadow-small);
+
+    transform:
+        rotate(-1deg);
+}
+
+
+.face-screen {
+
+    width: 106px;
+    height: 53px;
+
+    background:
+        var(--black);
+
+    border:
+        3px solid var(--black);
+
+    border-radius:
+        5px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 15px;
+
+    box-shadow:
+        inset 0 0 0 3px
+        #303030;
+}
+
+
+.face-eye {
+
+    width: 31px;
+    height: 27px;
+
+    background:
+        var(--cyan);
+
+    border-radius:
+        3px 3px 8px 8px;
+
+    box-shadow:
+        0 0 15px
+        rgba(32,244,244,0.45);
+
+    transition:
+        0.18s ease;
+}
+
+
+.face-shell.blinking
+.face-eye {
+
+    height: 4px;
+
+    border-radius:
+        4px;
+}
+
+
+.face-shell.happy
+.face-eye {
+
+    height: 17px;
+
+    border-radius:
+        4px 4px 14px 14px;
+
+    transform:
+        translateY(4px);
+}
+
+
+.face-shell.angry
+.face-eye:first-child {
+
+    transform:
+        rotate(8deg);
+}
+
+
+.face-shell.angry
+.face-eye:last-child {
+
+    transform:
+        rotate(-8deg);
+}
+
+
+.face-shell.tired
+.face-eye {
+
+    height: 11px;
+
+    border-radius:
+        2px;
+}
+
+
+.face-shell.curious
+.face-eye:first-child {
+
+    height: 18px;
+}
+
+.face-shell.curious
+.face-eye:last-child {
+
+    height: 31px;
+}
+
+
+/* ============================================================
+   HERO TEXT
+============================================================ */
+
+.hero-copy {
+
+    min-width: 0;
+}
+
+
+.hero-label {
+
+    display: inline-block;
+
+    padding:
+        6px 10px;
+
+    border:
+        2px solid var(--black);
+
+    background:
+        var(--cyan);
+
+    font-size:
+        11px;
+
+    text-transform:
+        uppercase;
+
+    letter-spacing:
+        1px;
+
+    transform:
+        rotate(-1deg);
+
+    margin-bottom:
+        9px;
+}
+
+
+.hero-copy h2 {
+
+    margin:
+        0 0 7px;
+
+    font-size:
+        clamp(
+            24px,
+            4vw,
+            42px
+        );
+
+    line-height:
+        0.98;
+
+    letter-spacing:
+        -1.4px;
+
+    text-transform:
+        uppercase;
+}
+
+
+.hero-copy p {
+
+    margin:
+        0;
+
+    font-family:
+        Arial,
+        sans-serif;
+
+    font-weight:
+        700;
+
+    color:
+        #494940;
+
+    line-height:
+        1.45;
+}
+
+
+/* ============================================================
+   COMMAND BADGE
+============================================================ */
+
+.command-display {
+
+    min-width:
+        150px;
+
+    border:
+        var(--line);
+
+    background:
+        var(--black);
+
+    color:
+        white;
+
+    border-radius:
+        15px;
+
+    padding:
+        14px 16px;
+
+    box-shadow:
+        var(--shadow-small);
+
+    text-align:
+        left;
+}
+
+
+.command-display small {
+
+    display:
+        block;
+
+    color:
+        var(--cyan);
+
+    font-size:
+        10px;
+
+    letter-spacing:
+        1.4px;
+
+    margin-bottom:
+        5px;
+}
+
+
+.command-display strong {
+
+    font-size:
+        18px;
+
+    display:
+        block;
+
+    text-transform:
+        uppercase;
+}
+
+
+/* ============================================================
+   MAIN GRID
+============================================================ */
+
+.dashboard {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        1.05fr
+        0.95fr;
+
+    gap:
+        24px;
+}
+
+
+.column {
+
+    display:
+        flex;
+
+    flex-direction:
+        column;
+
+    gap:
+        24px;
+}
+
+
+/* ============================================================
+   BRUTAL CARD
+============================================================ */
+
+.card {
+
+    background:
+        var(--paper);
+
+    border:
+        var(--line);
+
+    border-radius:
+        18px;
+
+    box-shadow:
+        var(--shadow);
+
+    padding:
+        20px;
+
+    position:
+        relative;
+}
+
+
+.card.dark {
+
+    background:
+        var(--black);
+
+    color:
+        white;
+}
+
+
+.card.cyan {
+
+    background:
+        var(--cyan-soft);
+}
+
+
+.card-header {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    align-items:
+        center;
+
+    gap:
+        12px;
+
+    margin-bottom:
+        18px;
+}
+
+
+.card-title {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    gap:
+        10px;
+}
+
+
+.card-number {
+
+    width:
+        31px;
+
+    height:
+        31px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    border:
+        2px solid var(--black);
+
+    background:
+        var(--yellow);
+
+    border-radius:
+        50%;
+
+    font-size:
+        12px;
+
+    color:
+        var(--black);
+}
+
+
+.card-title h3 {
+
+    margin:
+        0;
+
+    font-size:
+        16px;
+
+    text-transform:
+        uppercase;
+
+    letter-spacing:
+        0.3px;
+}
+
+
+.card-value {
+
+    font-size:
+        13px;
+
+    font-family:
+        Arial,
+        sans-serif;
+
+    font-weight:
+        800;
+
+    border:
+        2px solid var(--black);
+
+    background:
+        white;
+
+    color:
+        var(--black);
+
+    padding:
+        6px 10px;
+
+    border-radius:
+        7px;
+}
+
+
+/* ============================================================
+   RANGE
+============================================================ */
+
+.range-wrap {
+
+    border:
+        2px solid var(--black);
+
+    background:
+        white;
+
+    border-radius:
+        10px;
+
+    padding:
+        13px 14px;
+}
+
+
+input[type="range"] {
+
+    appearance:
+        none;
+
+    -webkit-appearance:
+        none;
+
+    width:
+        100%;
+
+    height:
+        13px;
+
+    border:
+        2px solid var(--black);
+
+    border-radius:
+        0;
+
+    background:
+        var(--yellow);
+
+    cursor:
+        pointer;
+}
+
+
+input[type="range"]::-webkit-slider-thumb {
+
+    appearance:
+        none;
+
+    -webkit-appearance:
+        none;
+
+    width:
+        27px;
+
+    height:
+        27px;
+
+    background:
+        var(--black);
+
+    border:
+        3px solid white;
+
+    box-shadow:
+        0 0 0
+        2px var(--black);
+
+    border-radius:
+        50%;
+}
+
+
+input[type="range"]::-moz-range-thumb {
+
+    width:
+        23px;
+
+    height:
+        23px;
+
+    background:
+        var(--black);
+
+    border:
+        3px solid white;
+
+    box-shadow:
+        0 0 0
+        2px var(--black);
+
+    border-radius:
+        50%;
+}
+
+
+/* ============================================================
+   BUTTON BASE
+============================================================ */
+
+button {
+
+    font:
+        inherit;
+
+    border:
+        3px solid var(--black);
+
+    background:
+        white;
+
+    color:
+        var(--black);
+
+    border-radius:
+        12px;
+
+    cursor:
+        pointer;
+
+    user-select:
+        none;
+
+    box-shadow:
+        4px 4px 0
+        var(--black);
+
+    transition:
+        transform 0.08s ease,
+        box-shadow 0.08s ease,
+        background 0.08s ease;
+}
+
+
+button:hover {
+
+    background:
+        var(--yellow-soft);
+}
+
+
+button:active,
+button.active {
+
+    transform:
+        translate(
+            4px,
+            4px
+        );
+
+    box-shadow:
+        0 0 0
+        var(--black);
+}
+
+
+/* ============================================================
+   DRIVE PAD
+============================================================ */
+
+.drive-card {
+
+    min-height:
+        430px;
+}
+
+
+.drive-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(
+            3,
+            104px
+        );
+
+    grid-template-rows:
+        repeat(
+            3,
+            104px
+        );
+
+    justify-content:
+        center;
+
+    gap:
+        13px;
+
+    margin-top:
+        12px;
+}
+
+
+.drive-button {
+
+    font-size:
+        34px;
+
+    background:
+        var(--yellow);
+
+    border-radius:
+        19px;
+}
+
+
+.drive-button .small {
+
+    display:
+        block;
+
+    font-family:
+        Arial,
+        sans-serif;
+
+    font-weight:
+        800;
+
+    font-size:
+        10px;
+
+    margin-top:
+        4px;
+
+    text-transform:
+        uppercase;
+}
+
+
+#forward {
+    grid-column:
+        2;
+    grid-row:
+        1;
+}
+
+#left {
+    grid-column:
+        1;
+    grid-row:
+        2;
+}
+
+#stop {
+
+    grid-column:
+        2;
+    grid-row:
+        2;
+
+    background:
+        var(--red);
+
+    color:
+        var(--black);
+
+    font-size:
+        14px;
+
+    letter-spacing:
+        0.4px;
+}
+
+#right {
+    grid-column:
+        3;
+    grid-row:
+        2;
+}
+
+#backward {
+    grid-column:
+        2;
+    grid-row:
+        3;
+}
+
+
+/* ============================================================
+   SERVO
+============================================================ */
+
+.servo-buttons {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        1fr
+        1fr
+        1fr;
+
+    gap:
+        11px;
+
+    margin-top:
+        14px;
+}
+
+
+.servo-buttons button {
+
+    min-height:
+        56px;
+
+    background:
+        var(--cyan);
+}
+
+
+.servo-buttons
+button:nth-child(2) {
+
+    background:
+        var(--yellow);
+}
+
+
+/* ============================================================
+   EMOTIONS
+============================================================ */
+
+.emotion-grid {
+
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(
+            3,
+            1fr
+        );
+
+    gap:
+        11px;
+}
+
+
+.emotion-button {
+
+    min-height:
+        72px;
+
+    padding:
+        8px;
+
+    background:
+        white;
+
+    font-size:
+        13px;
+
+    text-transform:
+        uppercase;
+}
+
+
+.emotion-button .emoji {
+
+    display:
+        block;
+
+    font-size:
+        22px;
+
+    margin-bottom:
+        4px;
+
+    font-family:
+        Arial,
+        sans-serif;
+}
+
+
+.emotion-button.selected {
+
+    background:
+        var(--cyan);
+
+    transform:
+        translate(
+            3px,
+            3px
+        );
+
+    box-shadow:
+        1px 1px 0
+        var(--black);
+}
+
+
+.blink-button {
+
+    margin-top:
+        13px;
+
+    width:
+        100%;
+
+    min-height:
+        54px;
+
+    background:
+        var(--yellow);
+
+    text-transform:
+        uppercase;
+}
+
+
+/* ============================================================
+   KEYBOARD HELP
+============================================================ */
+
+.shortcuts {
+
+    display:
+        grid;
+
+    gap:
+        10px;
+
+    font-family:
+        Arial,
+        sans-serif;
+
+    font-size:
+        13px;
+
+    font-weight:
+        700;
+}
+
+
+.shortcut-row {
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    flex-wrap:
+        wrap;
+
+    gap:
+        7px;
+}
+
+
+.shortcut-label {
+
+    min-width:
+        68px;
+
+    font-family:
+        "Arial Black",
+        Arial,
+        sans-serif;
+
+    text-transform:
+        uppercase;
+
+    font-size:
+        11px;
+}
+
+
+.key {
+
+    border:
+        2px solid white;
+
+    background:
+        var(--black-3);
+
+    color:
+        var(--cyan);
+
+    border-radius:
+        6px;
+
+    min-width:
+        29px;
+
+    height:
+        29px;
+
+    padding:
+        0 7px;
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    font-family:
+        "Arial Black",
+        Arial,
+        sans-serif;
+
+    font-size:
+        11px;
+}
+
+
+/* ============================================================
+   FOOTER
+============================================================ */
+
+.footer {
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+
+    gap:
+        15px;
+
+    margin-top:
+        28px;
+
+    padding:
+        17px 4px;
+
+    border-top:
+        3px solid var(--black);
+
+    font-family:
+        Arial,
+        sans-serif;
+
+    font-size:
+        11px;
+
+    font-weight:
+        800;
+
+    text-transform:
+        uppercase;
+
+    letter-spacing:
+        1px;
+}
+
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+
+@media
+(max-width: 820px) {
+
+    body {
+
+        padding:
+            16px;
+    }
+
+
+    .dashboard {
+
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .robot-hero {
+
+        grid-template-columns:
+            1fr;
+
+        text-align:
+            center;
+    }
+
+
+    .face-shell {
+
+        margin:
+            auto;
+    }
+
+
+    .hero-label {
+
+        margin-top:
+            5px;
+    }
+
+
+    .command-display {
+
+        width:
+            100%;
+
+        text-align:
+            center;
+    }
+}
+
+
+@media
+(max-width: 520px) {
+
+    body {
+
+        padding:
+            12px;
+    }
+
+
+    .topbar {
+
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .status {
+
+        width:
+            max-content;
+    }
+
+
+    .robot-card,
+    .card {
+
+        border-radius:
+            15px;
+
+        box-shadow:
+            5px 5px 0
+            var(--black);
+    }
+
+
+    .face-shell {
+
+        width:
+            154px;
+
+        height:
+            105px;
+    }
+
+
+    .face-screen {
+
+        width:
+            92px;
+
+        height:
+            47px;
+    }
+
+
+    .face-eye {
+
+        width:
+            27px;
+
+        height:
+            24px;
+    }
+
+
+    .drive-grid {
+
+        grid-template-columns:
+            repeat(
+                3,
+                84px
+            );
+
+        grid-template-rows:
+            repeat(
+                3,
+                84px
+            );
+
+        gap:
+            10px;
+    }
+
+
+    .drive-button {
+
+        font-size:
+            28px;
+    }
+
+
+    .emotion-grid {
+
+        grid-template-columns:
+            repeat(
+                2,
+                1fr
+            );
+    }
+
+
+    .servo-buttons {
+
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .footer {
+
+        flex-direction:
+            column;
+    }
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+<div class="app">
+
+
+    <!-- ======================================================
+         TOP BAR
+    ======================================================= -->
+
+    <header class="topbar">
+
+        <div class="brand">
+
+            <div class="brand-mark">
+
+                <span class="brand-eye"></span>
+                <span class="brand-eye"></span>
+
+            </div>
+
+
+            <div class="brand-copy">
+
+                <h1>
+                    Aura Robot
+                </h1>
+
+                <p>
+                    Little yellow robot control deck
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div
+            id="status"
+            class="status"
+        >
+
+            <div class="status-dot"></div>
+
+            <span id="statusText">
+                Connecting
+            </span>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ======================================================
+         ROBOT HERO
+    ======================================================= -->
+
+    <section class="robot-card">
+
+        <div class="robot-hero">
+
+
+            <div
+                id="robotFace"
+                class="face-shell"
+            >
+
+                <div class="face-screen">
+
+                    <span class="face-eye"></span>
+                    <span class="face-eye"></span>
+
+                </div>
+
+            </div>
+
+
+            <div class="hero-copy">
+
+                <span class="hero-label">
+                    ROBOT ONLINE
+                </span>
+
+                <h2>
+                    Tiny body.<br>
+                    Big attitude.
+                </h2>
+
+                <p>
+                    Drive the wheels, move the head,
+                    and control the OLED personality
+                    from one little brutalist console.
+                </p>
+
+            </div>
+
+
+            <div class="command-display">
+
+                <small>
+                    CURRENT ACTION
+                </small>
+
+                <strong id="command">
+                    STOP
+                </strong>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ======================================================
+         DASHBOARD
+    ======================================================= -->
+
+    <main class="dashboard">
+
+
+        <!-- ==================================================
+             LEFT
+        =================================================== -->
+
+        <div class="column">
+
+
+            <!-- ==============================================
+                 MOVEMENT
+            =============================================== -->
+
+            <section class="card drive-card">
+
+                <div class="card-header">
+
+                    <div class="card-title">
+
+                        <span class="card-number">
+                            01
+                        </span>
+
+                        <h3>
+                            Drive
+                        </h3>
+
+                    </div>
+
+
+                    <span class="card-value">
+                        WASD
+                    </span>
+
+                </div>
+
+
+                <div class="drive-grid">
+
+
+                    <button
+                        id="forward"
+                        class="drive-button"
+                    >
+                        ↑
+
+                        <span class="small">
+                            forward
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        id="left"
+                        class="drive-button"
+                    >
+                        ←
+
+                        <span class="small">
+                            left
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        id="stop"
+                        class="drive-button"
+                    >
+                        STOP
+
+                        <span class="small">
+                            space
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        id="right"
+                        class="drive-button"
+                    >
+                        →
+
+                        <span class="small">
+                            right
+                        </span>
+
+                    </button>
+
+
+                    <button
+                        id="backward"
+                        class="drive-button"
+                    >
+                        ↓
+
+                        <span class="small">
+                            back
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ==============================================
+                 MOTOR SPEED
+            =============================================== -->
+
+            <section class="card cyan">
+
+                <div class="card-header">
+
+                    <div class="card-title">
+
+                        <span class="card-number">
+                            02
+                        </span>
+
+                        <h3>
+                            Wheel power
+                        </h3>
+
+                    </div>
+
+
+                    <span class="card-value">
+
+                        <span id="speedValue">
+                            70
+                        </span>
+
+                        / 70
+
+                    </span>
+
+                </div>
+
+
+                <div class="range-wrap">
+
+                    <input
+                        id="speed"
+                        type="range"
+                        min="0"
+                        max="70"
+                        value="70"
+                    >
+
+                </div>
+
+            </section>
+
+        </div>
+
+
+
+        <!-- ==================================================
+             RIGHT
+        =================================================== -->
+
+        <div class="column">
+
+
+            <!-- ==============================================
+                 FACE
+            =============================================== -->
+
+            <section class="card">
+
+                <div class="card-header">
+
+                    <div class="card-title">
+
+                        <span class="card-number">
+                            03
+                        </span>
+
+                        <h3>
+                            Personality
+                        </h3>
+
+                    </div>
+
+
+                    <span
+                        id="emotionName"
+                        class="card-value"
+                    >
+                        AUTO
+                    </span>
+
+                </div>
+
+
+                <div class="emotion-grid">
+
+
+                    <button
+                        class="emotion-button"
+                        data-emotion="0"
+                        data-name="NORMAL"
+                        data-face="normal"
+                    >
+
+                        <span class="emoji">
+                            ◉ ◉
+                        </span>
+
+                        Normal
+
+                    </button>
+
+
+                    <button
+                        class="emotion-button"
+                        data-emotion="1"
+                        data-name="HAPPY"
+                        data-face="happy"
+                    >
+
+                        <span class="emoji">
+                            ◡ ◡
+                        </span>
+
+                        Happy
+
+                    </button>
+
+
+                    <button
+                        class="emotion-button"
+                        data-emotion="2"
+                        data-name="ANGRY"
+                        data-face="angry"
+                    >
+
+                        <span class="emoji">
+                            ⌁ ⌁
+                        </span>
+
+                        Angry
+
+                    </button>
+
+
+                    <button
+                        class="emotion-button"
+                        data-emotion="3"
+                        data-name="TIRED"
+                        data-face="tired"
+                    >
+
+                        <span class="emoji">
+                            — —
+                        </span>
+
+                        Tired
+
+                    </button>
+
+
+                    <button
+                        class="emotion-button"
+                        data-emotion="4"
+                        data-name="CURIOUS"
+                        data-face="curious"
+                    >
+
+                        <span class="emoji">
+                            ◉ ●
+                        </span>
+
+                        Curious
+
+                    </button>
+
+
+                    <button
+                        id="autoEmotion"
+                        class="emotion-button selected"
+                        data-emotion="5"
+                        data-name="AUTO"
+                        data-face="normal"
+                    >
+
+                        <span class="emoji">
+                            ✦ ✦
+                        </span>
+
+                        Auto
+
+                    </button>
+
+                </div>
+
+
+                <button
+                    id="blink"
+                    class="blink-button"
+                >
+                    ◉ Blink eyes ◉
+                </button>
+
+            </section>
+
+
+
+            <!-- ==============================================
+                 SERVO
+            =============================================== -->
+
+            <section class="card">
+
+                <div class="card-header">
+
+                    <div class="card-title">
+
+                        <span class="card-number">
+                            04
+                        </span>
+
+                        <h3>
+                            Head rotation
+                        </h3>
+
+                    </div>
+
+
+                    <span class="card-value">
+
+                        <span id="servoValue">
+                            90
+                        </span>°
+
+                    </span>
+
+                </div>
+
+
+                <div class="range-wrap">
+
+                    <input
+                        id="servoSlider"
+                        type="range"
+                        min="55"
+                        max="135"
+                        value="90"
+                    >
+
+                </div>
+
+
+                <div class="servo-buttons">
+
+                    <button id="servoLeft">
+                        ← LEFT
+                    </button>
+
+                    <button id="servoCenter">
+                        CENTER
+                    </button>
+
+                    <button id="servoRight">
+                        RIGHT →
+                    </button>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ==============================================
+                 KEYBOARD
+            =============================================== -->
+
+            <section class="card dark">
+
+                <div class="card-header">
+
+                    <div class="card-title">
+
+                        <span class="card-number">
+                            05
+                        </span>
+
+                        <h3>
+                            Quick keys
+                        </h3>
+
+                    </div>
+
+                </div>
+
+
+                <div class="shortcuts">
+
+
+                    <div class="shortcut-row">
+
+                        <span class="shortcut-label">
+                            Drive
+                        </span>
+
+                        <span class="key">W</span>
+                        <span class="key">A</span>
+                        <span class="key">S</span>
+                        <span class="key">D</span>
+
+                    </div>
+
+
+                    <div class="shortcut-row">
+
+                        <span class="shortcut-label">
+                            Head
+                        </span>
+
+                        <span class="key">Q</span>
+                        <span class="key">E</span>
+                        <span class="key">C</span>
+
+                    </div>
+
+
+                    <div class="shortcut-row">
+
+                        <span class="shortcut-label">
+                            Face
+                        </span>
+
+                        <span class="key">1</span>
+                        <span class="key">2</span>
+                        <span class="key">3</span>
+                        <span class="key">4</span>
+                        <span class="key">5</span>
+                        <span class="key">0</span>
+
+                    </div>
+
+
+                    <div class="shortcut-row">
+
+                        <span class="shortcut-label">
+                            Blink
+                        </span>
+
+                        <span class="key">B</span>
+
+                        <span class="shortcut-label">
+                            Stop
+                        </span>
+
+                        <span class="key">
+                            SPACE
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </div>
+
+    </main>
+
+
+
+    <!-- ======================================================
+         FOOTER
+    ======================================================= -->
+
+    <footer class="footer">
+
+        <span>
+            UNO Q / L298N / SH1106 / SERVO
+        </span>
+
+        <span>
+            BUILT FOR THE YELLOW BOT
+        </span>
+
+    </footer>
+
+</div>
+
+
+
+<script>
+
+/* ============================================================
+   ELEMENTS
+============================================================ */
+
+const statusBox =
+    document.getElementById(
+        "status"
+    );
+
+const statusText =
+    document.getElementById(
+        "statusText"
+    );
+
+const command =
+    document.getElementById(
+        "command"
+    );
+
+
+const robotFace =
+    document.getElementById(
+        "robotFace"
+    );
+
+
+const forward =
+    document.getElementById(
+        "forward"
+    );
+
+const backward =
+    document.getElementById(
+        "backward"
+    );
+
+const left =
+    document.getElementById(
+        "left"
+    );
+
+const right =
+    document.getElementById(
+        "right"
+    );
+
+const stopButton =
+    document.getElementById(
+        "stop"
+    );
+
+
+const speedSlider =
+    document.getElementById(
+        "speed"
+    );
+
+const speedValue =
+    document.getElementById(
+        "speedValue"
+    );
+
+
+const servoSlider =
+    document.getElementById(
+        "servoSlider"
+    );
+
+const servoValue =
+    document.getElementById(
+        "servoValue"
+    );
+
+const servoLeft =
+    document.getElementById(
+        "servoLeft"
+    );
+
+const servoCenter =
+    document.getElementById(
+        "servoCenter"
+    );
+
+const servoRight =
+    document.getElementById(
+        "servoRight"
+    );
+
+
+const emotionName =
+    document.getElementById(
+        "emotionName"
+    );
+
+const emotionButtons =
+    document.querySelectorAll(
+        ".emotion-button"
+    );
+
+const blinkButton =
+    document.getElementById(
+        "blink"
+    );
+
+
+/* ============================================================
+   STATE
+============================================================ */
+
+let moving = false;
+
+let servoAngle = 90;
+
+let currentDriveKey = null;
+
+
+/* ============================================================
+   API
+============================================================ */
+
+async function api(url) {
+
+    try {
+
+        const response =
+            await fetch(
+                url,
+                {
+                    method:
+                        "GET",
+
+                    cache:
+                        "no-store"
+                }
+            );
+
+
+        if (!response.ok) {
+
+            throw new Error(
+                `HTTP ${response.status}`
+            );
+        }
+
+
+        const data =
+            await response.json();
+
+
+        if (
+            data &&
+            data.success === false
+        ) {
+
+            throw new Error(
+                data.error ||
+                "Device command failed"
+            );
+        }
+
+
+        setConnected(
+            true
+        );
+
+
+        return data;
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "API error:",
+            url,
+            error
+        );
+
+
+        setConnected(
+            false
+        );
+
+
+        return null;
+    }
+}
+
+
+/* ============================================================
+   CONNECTION
+============================================================ */
+
+function setConnected(connected) {
+
+    if (connected) {
+
+        statusBox.classList.add(
+            "connected"
+        );
+
+        statusBox.classList.remove(
+            "error"
+        );
+
+        statusText.textContent =
+            "Connected";
+
+    }
+
+    else {
+
+        statusBox.classList.remove(
+            "connected"
+        );
+
+        statusBox.classList.add(
+            "error"
+        );
+
+        statusText.textContent =
+            "Disconnected";
+    }
+}
+
+
+/* ============================================================
+   DRIVE
+============================================================ */
+
+function drive(
+    leftValue,
+    rightValue,
+    name
+) {
+
+    moving = true;
+
+    command.textContent =
+        name;
+
+
+    api(
+        `/api/drive/${leftValue}/${rightValue}`
+    );
+}
+
+
+/* ============================================================
+   STOP
+============================================================ */
+
+function stopCar() {
+
+    moving = false;
+
+    currentDriveKey = null;
+
+    command.textContent =
+        "STOP";
+
+
+    api(
+        "/api/stop"
+    );
+
+
+    document
+        .querySelectorAll(
+            ".drive-button"
+        )
+        .forEach(
+            button => {
+
+                button.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+}
+
+
+/* ============================================================
+   POINTER DRIVE BUTTON
+============================================================ */
+
+function setupDriveButton(
+    button,
+    leftValue,
+    rightValue,
+    name
+) {
+
+    button.addEventListener(
+        "pointerdown",
+        event => {
+
+            event.preventDefault();
+
+
+            try {
+
+                button.setPointerCapture(
+                    event.pointerId
+                );
+
+            }
+
+            catch (_) {}
+
+
+            button.classList.add(
+                "active"
+            );
+
+
+            drive(
+                leftValue,
+                rightValue,
+                name
+            );
+        }
+    );
+
+
+    button.addEventListener(
+        "pointerup",
+        event => {
+
+            event.preventDefault();
+
+            stopCar();
+        }
+    );
+
+
+    button.addEventListener(
+        "pointercancel",
+        stopCar
+    );
+
+
+    button.addEventListener(
+        "lostpointercapture",
+        () => {
+
+            if (moving) {
+                stopCar();
+            }
+
+        }
+    );
+}
+
+
+setupDriveButton(
+    forward,
+    1,
+    1,
+    "FORWARD"
+);
+
+
+setupDriveButton(
+    backward,
+    -1,
+    -1,
+    "BACKWARD"
+);
+
+
+setupDriveButton(
+    left,
+    -1,
+    1,
+    "LEFT"
+);
+
+
+setupDriveButton(
+    right,
+    1,
+    -1,
+    "RIGHT"
+);
+
+
+stopButton.addEventListener(
+    "pointerdown",
+    event => {
+
+        event.preventDefault();
+
+        stopCar();
+    }
+);
+
+
+/* ============================================================
+   SPEED
+============================================================ */
+
+speedSlider.addEventListener(
+    "input",
+    () => {
+
+        speedValue.textContent =
+            speedSlider.value;
+    }
+);
+
+
+speedSlider.addEventListener(
+    "change",
+    () => {
+
+        api(
+            `/api/speed/${speedSlider.value}`
+        );
+    }
+);
+
+
+/* ============================================================
+   SERVO
+============================================================ */
+
+function setServo(angle) {
+
+    angle =
+        Math.max(
+            55,
+            Math.min(
+                135,
+                angle
+            )
+        );
+
+
+    servoAngle =
+        angle;
+
+
+    servoSlider.value =
+        servoAngle;
+
+
+    servoValue.textContent =
+        servoAngle;
+
+
+    api(
+        `/api/servo/${servoAngle}`
+    );
+}
+
+
+servoSlider.addEventListener(
+    "input",
+    () => {
+
+        servoAngle =
+            Number(
+                servoSlider.value
+            );
+
+
+        servoValue.textContent =
+            servoAngle;
+    }
+);
+
+
+servoSlider.addEventListener(
+    "change",
+    () => {
+
+        setServo(
+            Number(
+                servoSlider.value
+            )
+        );
+    }
+);
+
+
+servoLeft.addEventListener(
+    "click",
+    () => {
+
+        setServo(
+            servoAngle - 5
+        );
+    }
+);
+
+
+servoCenter.addEventListener(
+    "click",
+    () => {
+
+        setServo(
+            90
+        );
+    }
+);
+
+
+servoRight.addEventListener(
+    "click",
+    () => {
+
+        setServo(
+            servoAngle + 5
+        );
+    }
+);
+
+
+/* ============================================================
+   FACE PREVIEW
+============================================================ */
+
+function updateFacePreview(
+    face
+) {
+
+    robotFace.classList.remove(
+        "happy",
+        "angry",
+        "tired",
+        "curious"
+    );
+
+
+    if (
+        face &&
+        face !== "normal"
+    ) {
+
+        robotFace.classList.add(
+            face
+        );
+    }
+}
+
+
+/* ============================================================
+   EMOTIONS
+============================================================ */
+
+function setEmotion(
+    value,
+    name,
+    face = "normal",
+    selectedButton = null
+) {
+
+    emotionName.textContent =
+        name;
+
+
+    updateFacePreview(
+        face
+    );
+
+
+    emotionButtons.forEach(
+        button => {
+
+            button.classList.remove(
+                "selected"
+            );
+        }
+    );
+
+
+    if (selectedButton) {
+
+        selectedButton.classList.add(
+            "selected"
+        );
+
+    }
+
+    else {
+
+        emotionButtons.forEach(
+            button => {
+
+                if (
+                    Number(
+                        button.dataset.emotion
+                    ) === value
+                ) {
+
+                    button.classList.add(
+                        "selected"
+                    );
+                }
+            }
+        );
+    }
+
+
+    api(
+        `/api/emotion/${value}`
+    );
+}
+
+
+emotionButtons.forEach(
+    button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                const value =
+                    Number(
+                        button.dataset.emotion
+                    );
+
+
+                const name =
+                    button.dataset.name;
+
+
+                const face =
+                    button.dataset.face ||
+                    "normal";
+
+
+                setEmotion(
+                    value,
+                    name,
+                    face,
+                    button
+                );
+            }
+        );
+    }
+);
+
+
+/* ============================================================
+   BLINK
+============================================================ */
+
+function blinkEyes() {
+
+    robotFace.classList.add(
+        "blinking"
+    );
+
+
+    blinkButton.classList.add(
+        "active"
+    );
+
+
+    api(
+        "/api/blink"
+    );
+
+
+    setTimeout(
+        () => {
+
+            robotFace.classList.remove(
+                "blinking"
+            );
+
+            blinkButton.classList.remove(
+                "active"
+            );
+
+        },
+        240
+    );
+}
+
+
+blinkButton.addEventListener(
+    "click",
+    blinkEyes
+);
+
+
+/* ============================================================
+   KEYBOARD
+============================================================ */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        const key =
+            event.key.toLowerCase();
+
+
+        if (
+            event.code === "Space" ||
+            [
+                "ArrowUp",
+                "ArrowDown",
+                "ArrowLeft",
+                "ArrowRight"
+            ].includes(
+                event.key
+            )
+        ) {
+
+            event.preventDefault();
+        }
+
+
+        /* STOP */
+
+        if (
+            event.code === "Space"
+        ) {
+
+            stopCar();
+
+            return;
+        }
+
+
+        /* DRIVE */
+
+        if (!event.repeat) {
+
+
+            if (
+                key === "w" ||
+                event.key === "ArrowUp"
+            ) {
+
+                currentDriveKey =
+                    key;
+
+
+                forward.classList.add(
+                    "active"
+                );
+
+
+                drive(
+                    1,
+                    1,
+                    "FORWARD"
+                );
+
+
+                return;
+            }
+
+
+            if (
+                key === "s" ||
+                event.key === "ArrowDown"
+            ) {
+
+                currentDriveKey =
+                    key;
+
+
+                backward.classList.add(
+                    "active"
+                );
+
+
+                drive(
+                    -1,
+                    -1,
+                    "BACKWARD"
+                );
+
+
+                return;
+            }
+
+
+            if (
+                key === "a" ||
+                event.key === "ArrowLeft"
+            ) {
+
+                currentDriveKey =
+                    key;
+
+
+                left.classList.add(
+                    "active"
+                );
+
+
+                drive(
+                    -1,
+                    1,
+                    "LEFT"
+                );
+
+
+                return;
+            }
+
+
+            if (
+                key === "d" ||
+                event.key === "ArrowRight"
+            ) {
+
+                currentDriveKey =
+                    key;
+
+
+                right.classList.add(
+                    "active"
+                );
+
+
+                drive(
+                    1,
+                    -1,
+                    "RIGHT"
+                );
+
+
+                return;
+            }
+        }
+
+
+        /* SERVO */
+
+        if (
+            key === "q"
+        ) {
+
+            event.preventDefault();
+
+            setServo(
+                servoAngle - 5
+            );
+
+            return;
+        }
+
+
+        if (
+            key === "e"
+        ) {
+
+            event.preventDefault();
+
+            setServo(
+                servoAngle + 5
+            );
+
+            return;
+        }
+
+
+        if (
+            key === "c" &&
+            !event.repeat
+        ) {
+
+            setServo(
+                90
+            );
+
+            return;
+        }
+
+
+        /* FACE */
+
+        if (event.repeat) {
+            return;
+        }
+
+
+        if (
+            key === "1"
+        ) {
+
+            setEmotion(
+                0,
+                "NORMAL",
+                "normal"
+            );
+        }
+
+
+        else if (
+            key === "2"
+        ) {
+
+            setEmotion(
+                1,
+                "HAPPY",
+                "happy"
+            );
+        }
+
+
+        else if (
+            key === "3"
+        ) {
+
+            setEmotion(
+                2,
+                "ANGRY",
+                "angry"
+            );
+        }
+
+
+        else if (
+            key === "4"
+        ) {
+
+            setEmotion(
+                3,
+                "TIRED",
+                "tired"
+            );
+        }
+
+
+        else if (
+            key === "5"
+        ) {
+
+            setEmotion(
+                4,
+                "CURIOUS",
+                "curious"
+            );
+        }
+
+
+        else if (
+            key === "0"
+        ) {
+
+            setEmotion(
+                5,
+                "AUTO",
+                "normal"
+            );
+        }
+
+
+        else if (
+            key === "b"
+        ) {
+
+            blinkEyes();
+        }
+    }
+);
+
+
+/* ============================================================
+   KEY RELEASE
+============================================================ */
+
+document.addEventListener(
+    "keyup",
+    event => {
+
+        const key =
+            event.key.toLowerCase();
+
+
+        const isDriveKey =
+
+            key === "w" ||
+
+            key === "a" ||
+
+            key === "s" ||
+
+            key === "d" ||
+
+            event.key ===
+                "ArrowUp" ||
+
+            event.key ===
+                "ArrowDown" ||
+
+            event.key ===
+                "ArrowLeft" ||
+
+            event.key ===
+                "ArrowRight";
+
+
+        if (isDriveKey) {
+
+            stopCar();
+        }
+    }
+);
+
+
+/* ============================================================
+   SAFETY
+============================================================ */
+
+window.addEventListener(
+    "blur",
+    () => {
+
+        if (moving) {
+
+            stopCar();
+        }
+    }
+);
+
+
+document.addEventListener(
+    "visibilitychange",
+    () => {
+
+        if (
+            document.hidden &&
+            moving
+        ) {
+
+            stopCar();
+        }
+    }
+);
+
+
+/* ============================================================
+   CONNECTION CHECK
+============================================================ */
+
+async function checkConnection() {
+
+    const data =
+        await api(
+            "/api/status"
+        );
+
+
+    if (
+        data &&
+        data.success
+    ) {
+
+        setConnected(
+            true
+        );
+    }
+}
+
+
+/* ============================================================
+   INITIALIZE
+============================================================ */
+
+async function initializeRobot() {
+
+    await checkConnection();
+
+
+    await api(
+        "/api/speed/70"
+    );
+
+
+    await api(
+        "/api/servo/90"
+    );
+
+
+    await api(
+        "/api/emotion/5"
+    );
+}
+
+
+initializeRobot();
+
+
+/* ============================================================
+   KEEP CONNECTION STATUS UPDATED
+============================================================ */
+
+setInterval(
+    checkConnection,
+    5000
+);
+
+</script>
+
+</body>
+</html>
